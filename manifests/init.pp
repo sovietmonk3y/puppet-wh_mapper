@@ -11,7 +11,7 @@ class wh_mapper {
 
   package { 'south':
     ensure   => 'present',
-    provider => 'pip'
+    provider => 'pip',
     require  => [Class['python'], Package['python-pip']]
   }
 
