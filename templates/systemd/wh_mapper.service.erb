@@ -1,0 +1,21 @@
+# MANAGED BY PUPPET
+
+# systemd config for wh_mapper
+
+
+[Unit]
+Description=wh_mapper Tornado Server
+
+After=network-online.target mysql.service
+
+
+[Service]
+WorkingDirectory=<%= @source_dir %>
+ExecStart=<%= @path_to_python %> tornado_main.py
+
+Restart=always
+RestartSec=1
+
+
+[Install]
+WantedBy=multi-user.target
