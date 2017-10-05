@@ -30,6 +30,13 @@ class wh_mapper (
     require  => [Class['python'], Package['python-pip']]
   }
 
+  exec { 'wh_mapper_db_setup':
+    command => "${source_dir}/manage.py syncdb --noinput --migrate",
+    creates => '/var/lib/mysql/wh_mapper/auth_user.ibd',
+    require => [
+      Mysql::Db['wh_mapper'], Package['django', 'mysql-python', 'south']]
+  }
+
   file { 'wh_mapper_systemd_config':
     ensure  => 'present',
     content => template('wh_mapper/systemd/wh_mapper.service.erb'),
@@ -40,6 +47,6 @@ class wh_mapper (
     enable   => true,
     ensure   => 'running',
     provider => 'systemd',
-    require  => File['wh_mapper_systemd_config']
+    require  => [Exec['wh_mapper_db_setup'], File['wh_mapper_systemd_config']]
   }
 }

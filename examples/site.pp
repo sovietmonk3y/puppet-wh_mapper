@@ -15,6 +15,6 @@ node default {
   }
 
   class { 'wh_mapper':
-    require => [Class['python'], Package['python-pip']]
+    require => [Mysql::Db['wh_mapper'], Class['python'], Package['python-pip']]
   }
 }
